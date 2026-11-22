@@ -1,0 +1,7 @@
+# Claude Code settings that belong to one machine
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
