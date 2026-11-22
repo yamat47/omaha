@@ -1,0 +1,125 @@
+# Expressions the style guide rules out of a page. One entry per line.
+#
+#   phrase                      a literal phrase: case-insensitive, on word boundaries, and a
+#                               space also matches a line wrap inside a paragraph
+#   /regular expression/        the same matching, with the expression written by hand; a space
+#                               in it matches a line wrap, and no boundaries are added for you
+#   entry => suggestion         the suggestion is shown in the message
+#   # comment                   a whole line, or the end of a line that holds a literal phrase
+#
+# Where this list and football collide, football wins: a word a coach would use in its plain
+# sense is not listed, or is listed only in the shape that is not football. Each such judgment
+# is written next to the entry.
+
+# Declarations of benefit
+# "improve" is left out: a coach says a drill improves a skill, and a claim about a scheme is
+# fine. Only the third person "improves" is flagged, as the style guide lists it.
+/\benabl(?:es|ed|ing)\b/ => lets
+/\b(?:mak(?:es|ing)|made) it possible\b/
+improves
+ensures => makes sure
+/\brobust(?:ly|ness)?\b/
+/\bseamless(?:ly)?\b/
+efficiently
+appropriately
+# "leverage" is a football word: a defender has leverage on the ball, and a coach says the
+# defender leverages the ball. Only the verb that means "use" is flagged, which takes an article
+# or a possessive; the nouns a coach names after it are let through.
+/\bleverag(?:e|es|ed|ing)\s+(?:the|this|that|their|its|a|an)\b(?!\s+(?:ball|ballcarrier|carrier|runner|receiver|blocker|block|edge|hash|sideline|defender|line)\b)/
+/\butili[sz](?:e|es|ed|ing|ation)\b/ => use
+/\bfacilitat(?:e|es|ed|ing)\b/ => help
+/\bstreamlin(?:e|es|ed|ing)\b/
+/\bempower(?:s|ed|ing|ment)?\b/
+# Coaches do say a lineman unlocks his hips, which is plain football.
+/\bunlock(?:s|ed|ing)?\b(?!\s+(?:(?:the|his|her|their|your)\s+)?hips?\b)/
+
+# Meta statements
+to summarize
+in summary
+in conclusion
+the key point is
+the key takeaway
+it is worth noting
+it's worth noting
+it is important to note
+notably
+importantly
+needless to say
+as mentioned above
+as we have seen
+let's dive in
+let's take a look
+in this article
+in this section
+this page covers
+
+# Hedges
+it seems
+seems to
+just in case
+arguably
+perhaps
+# "kind of" and "sort of" are fine as a noun: "this kind of blitz", "what kind of look". The
+# hedge is the adverb before an adjective or a verb, so a determiner or a word that points at a
+# class of things in front of the phrase lets it through.
+/(?<!\b(?:this|that|what|a|the|any|each|every|one|same|some|other|another|different|certain|particular|special|which|whatever)\s+)\bkind of\b/
+/(?<!\b(?:this|that|what|a|the|any|each|every|one|same|some|other|another|different|certain|particular|special|which|whatever)\s+)\bsort of\b/
+
+# Machine-sounding filler
+/\bdelv(?:e|es|ed|ing)\b/
+tapestry
+testament to
+a testament
+at its core
+at the end of the day
+in the world of
+in today's
+when it comes to
+/\bgame(?:-|\s)changers?\b/
+crucial
+pivotal
+vital role
+key role
+/\bplay(?:s|ed|ing)? a role in\b/
+a wide range of
+a variety of
+myriad
+plethora
+/\bboast(?:s|ed|ing)?\b/
+/\bshowcas(?:es|ed|ing)\b/
+/\bunderscor(?:es|ed|ing)\b/
+# "landscape" is rare in football prose, so it stays flagged.
+landscape
+/\brealms?\b/
+# A running back navigates traffic, which is plain football. Only the abstract objects that
+# the filler sentence takes are flagged.
+/\bnavigat(?:e|es|ed|ing)\s+(?:the|this|these|those|a|an)\s+(?:complex\w*|landscape|world|challenges?|intricac\w+|nuances?|process|journey|terrain)\b/
+# The pair inside one sentence. Either half alone is fine.
+/\bnot only\b[^.!?]*\bbut also\b/
+whether you're
+whether you are
+look no further
+rest assured
+first and foremost
+last but not least
+on the other hand
+in order to => to
+due to the fact that => because
+the fact that
+# Only "serves as". "Acts as a" is left out because a safety acts as a robber and a tight end as a
+# tackle, and "served as" is how a career is told.
+serves as => is
+essentially
+basically
+# Only "fundamentally", the adverb. Coaches say "fundamentals", which the word boundary lets
+# through.
+fundamentally
+ultimately
+simply put
+in essence
+truly
+very
+really
+incredibly
+extremely
+quite
