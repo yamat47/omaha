@@ -1,0 +1,31 @@
+---
+import { PageHeader, Prose } from "@yamat47/pylon";
+import Base from "../layouts/Base.astro";
+import { ABOUT } from "../site";
+---
+
+<Base
+  title={ABOUT.title}
+  description="What the wiki is for, and how its pages treat the sources they draw on."
+>
+  <PageHeader title={ABOUT.title} />
+  <Prose>
+    <p>
+      omaha is a wiki of American football. It holds schemes, techniques and drills from across
+      the whole game, written from what coaches publish about their own systems. It is something to
+      turn to when stuck: designing what a team runs, planning for a game and adjusting during it,
+      and teaching players.
+    </p>
+
+    <h2>How it treats sources</h2>
+    <p>
+      Every page is written in its own words and links the sources it draws on. A page says whose
+      view a claim is. Where coaches disagree, each view is given with the coach's name, and the
+      views are not averaged into one.
+    </p>
+    <p>
+      No text, figure or video of a source is copied here. A quotation is at most one sentence,
+      kept only where the wording itself is the information, in quotation marks and with its source.
+    </p>
+  </Prose>
+</Base>

@@ -1,0 +1,53 @@
+---
+import "@yamat47/pylon/styles.css";
+import { SITE } from "../site";
+import { type PageWidth, SiteFrame } from "./SiteFrame";
+
+interface Props {
+  /** The page's own title; omitted on the top page, which is titled by the site alone. */
+  title?: string;
+  /** What a search result or a shared link says under the title; the site's when omitted. */
+  description?: string;
+  /** How wide the content is; a column of text when omitted. */
+  width?: PageWidth;
+  /** `false` for a page that has no address of its own, as the not-found page. */
+  canonical?: boolean;
+}
+
+const { title, description = SITE.description, width = "text", canonical = true } = Astro.props;
+const fullTitle = title ? `${title} - ${SITE.name}` : SITE.name;
+const path = Astro.url.pathname;
+const url = new URL(path, Astro.site);
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {canonical && <link rel="canonical" href={url} />}
+    {
+      // What a link to the page shows where it is shared. There is no picture: the card is the
+      // title and the description.
+    }
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title || SITE.name} />
+    <meta property="og:description" content={description} />
+    {canonical && <meta property="og:url" content={url} />}
+    {
+      // The drawing for a browser that takes one, a picture of it for the others, and a larger
+      // picture for the home screen of a phone. All three are in public/.
+    }
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+  <body class="text-body-latin">
+    <SiteFrame width={width} path={path} nameIsHeading={title === undefined}>
+      <slot />
+    </SiteFrame>
+  </body>
+</html>

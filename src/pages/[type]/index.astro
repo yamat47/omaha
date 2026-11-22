@@ -1,0 +1,41 @@
+---
+import { PageHeader, Prose } from "@yamat47/pylon";
+import { PageList } from "../../components/PageList";
+import Base from "../../layouts/Base.astro";
+import { alphabetical, groupByArea } from "../../lib/listing";
+import { PAGE_TYPES, type PageType } from "../../lib/schema";
+import { getPages, toEntry } from "../../lib/site-pages";
+import { TYPE_INFO } from "../../lib/types";
+
+export function getStaticPaths() {
+  return PAGE_TYPES.map((type) => ({ params: { type } }));
+}
+
+const type = Astro.params.type as PageType;
+const { label, blurb } = TYPE_INFO[type];
+const entries = (await getPages()).map(toEntry).filter((entry) => entry.type === type);
+// The terms are words to look up, so they are one list by title. The other types are cut by the
+// part of the game they belong to.
+const groups =
+  type === "terms"
+    ? [{ area: "all", label: "", entries: alphabetical(entries) }]
+    : groupByArea(entries);
+---
+
+<Base title={label} description={blurb}>
+  <PageHeader title={label} count={entries.length} />
+  <Prose>
+    {
+      entries.length === 0 ? (
+        <p>No pages yet.</p>
+      ) : (
+        groups.map((group) => (
+          <>
+            {group.label !== "" && <h2>{group.label}</h2>}
+            <PageList entries={group.entries} />
+          </>
+        ))
+      )
+    }
+  </Prose>
+</Base>
