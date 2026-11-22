@@ -17,6 +17,8 @@ procedure that writes a page is added to this file with the files it describes.
 | `src/lib/` | The rules as pure functions: reading a file (`frontmatter.ts`, `parse-page.ts`, `body-problems.ts`), where a page lives (`pages.ts`), the rules that span pages (`content-problems.ts`), the lists the site shows (`listing.ts`). `load-content.ts` reads the directory; `content-loader.ts` and `site-pages.ts` connect it to Astro |
 | `scripts/validate.ts` | Checks `content/` against the schema and against itself. Only reads files and prints; CI runs it on every pull request |
 | `src/pages/`, `src/layouts/`, `src/components/`, `src/site.ts` | The routes (top, a type's list, a page, about, 404, `robots.txt`), the shell of every page (`Base.astro`, with the header and footer in `SiteFrame.tsx`), the lists a page shows, and the site's name and address |
+| `src/lib/prose/`, `scripts/prose-check.ts` | The mechanical check of prose: what a script can tell of a page (the expressions the style rules out, dashes, labelled bullets, long sentences, block quotations, long quotations, images, the length of a page of its type) and of a note on a source (block quotations, long quotations, images). The rules are pure functions; the script reads files and prints `path:line:col rule message` |
+| `style/banned.txt`, `style/limits.json` | The data of that check: the expressions not to use, one in a line, each exception for football's own words explained in a comment; and the limits (words in a sentence, in a quotation, in a page of each type). A change here is a change of the rules |
 | `public/` | The mark as the favicon: `favicon.svg` is the drawing, `favicon.ico` (32 px) and `apple-touch-icon.png` (180 px, square corners) are pictures of it |
 | `tests/` | Vitest tests of `src/lib/`. `tests/fixtures/content/` holds four pages, one of each type, for looking at the site and testing it; they are not wiki pages and never ship |
 | `docker/`, `Makefile` | Development image and compose, and the entry point for development commands |
@@ -42,9 +44,10 @@ works there without Docker. The targets that operate Docker (`setup`, `up`, `dow
 
 | Goal | Command |
 |---|---|
-| Typecheck, lint, test, validate and build in one go | `make check` (CI runs the same, plus zizmor on the workflows) |
+| Typecheck, lint, test, validate, check the prose and build in one go | `make check` (CI runs the same, plus zizmor on the workflows) |
 | Type check / lint / auto-fix / test | `make typecheck` / `make lint` / `make fix` / `make test` |
 | Check the pages | `make validate` (always after editing a file under `content/`) |
+| Check the prose | `make prose` (every page and note), `make prose ARGS="content/schemes/inside-zone.md"` (one file). It must pass before a page is committed: fix a finding by rewriting the sentence |
 | Build the site | `make build` (`dist/`) |
 | Look at the site with pages | `OMAHA_CONTENT_DIR=tests/fixtures/content make build` (or `make up`): the variable points the build and the validation at another directory |
 | Dev server | `make up` (http://localhost:4321) / `make logs` / `make down`. The pages themselves have no tests: after changing one, look at it at phone width |

@@ -24,7 +24,7 @@ Everything runs in Docker; only Docker and `make` are needed on the host.
 ```sh
 make setup   # build the image and install the dependencies
 make up      # dev server at http://localhost:4321 (make down stops it)
-make check   # typecheck, lint, test, validate the pages, and build
+make check   # typecheck, lint, test, validate the pages, check the prose, and build
 make help    # list the targets
 ```
 

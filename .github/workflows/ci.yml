@@ -51,6 +51,12 @@ jobs:
       - name: Validate the content
         run: pnpm run validate
 
+      # What a script can tell of the prose of a page: the expressions the style rules out, dashes,
+      # long sentences, block quotations, long quotations, images. A model reviews the rest before
+      # the pull request is opened; this step is the part that does not depend on a model.
+      - name: Check the prose
+        run: pnpm run prose
+
       - name: Build (Astro)
         run: pnpm run build
 
