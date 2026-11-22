@@ -1,0 +1,46 @@
+---
+import { render } from "astro:content";
+import { fullDate, Introduction, Prose, Text } from "@yamat47/pylon";
+import { PageList } from "../../components/PageList";
+import { Sources } from "../../components/Sources";
+import Base from "../../layouts/Base.astro";
+import { getPages, locate, toEntry } from "../../lib/site-pages";
+
+export async function getStaticPaths() {
+  const pages = await getPages();
+  return pages.map((page) => ({ params: locate(page), props: { page } }));
+}
+
+const { page } = Astro.props;
+const { Content } = await render(page);
+const { title, summary, sources, related = [], updated } = page.data;
+
+const byKey = new Map((await getPages()).map((other) => [other.id, other]));
+const relatedEntries = related.flatMap((ref) => {
+  const other = byKey.get(ref);
+  return other === undefined ? [] : [toEntry(other)];
+});
+---
+
+<Base title={title} description={summary}>
+  <article>
+    <Prose>
+      <Text variant="title" as="h1">{title}</Text>
+      <Introduction lang="en">{summary}</Introduction>
+      <Content />
+      <h2>Sources</h2>
+      <Sources sources={sources} />
+      {
+        relatedEntries.length > 0 && (
+          <>
+            <h2>Related</h2>
+            <PageList entries={relatedEntries} />
+          </>
+        )
+      }
+      <Text variant="small" tone="muted">
+        Last changed <time datetime={updated}>{fullDate(updated)}</time>
+      </Text>
+    </Prose>
+  </article>
+</Base>

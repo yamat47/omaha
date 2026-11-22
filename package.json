@@ -1,0 +1,42 @@
+{
+  "name": "omaha",
+  "private": true,
+  "description": "A wiki of American football: schemes, techniques and drills, written from what coaches publish",
+  "homepage": "https://omaha.yamat47.me/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yamat47/omaha.git"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host",
+    "build": "astro build",
+    "typecheck": "astro check",
+    "lint": "biome check --error-on-warnings .",
+    "lint:fix": "biome check --write .",
+    "test": "vitest run",
+    "validate": "node scripts/validate.ts",
+    "check": "pnpm run typecheck && pnpm run lint && pnpm run test && pnpm run validate && pnpm run build"
+  },
+  "packageManager": "pnpm@11.8.0",
+  "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.10",
+    "@astrojs/react": "^7.1.9",
+    "@astrojs/sitemap": "^3.7.6",
+    "@yamat47/pylon": "^0.4.0",
+    "astro": "^7.4.12",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "yaml": "^2.9.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "@biomejs/biome": "^2.6.7",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "~6.0.3",
+    "vitest": "^5.1.0"
+  }
+}

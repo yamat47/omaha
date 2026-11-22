@@ -1,0 +1,49 @@
+---
+import { Introduction, Prose, Text, WritingList } from "@yamat47/pylon";
+import Base from "../layouts/Base.astro";
+import { countByType, pageCount, recentlyChanged } from "../lib/listing";
+import { pagePath } from "../lib/pages";
+import { getPages, toEntry } from "../lib/site-pages";
+import { TYPES } from "../lib/types";
+import { ABOUT } from "../site";
+
+const entries = (await getPages()).map(toEntry);
+const recent = recentlyChanged(entries, 10);
+---
+
+<Base>
+  <Prose>
+    <Introduction lang="en" more={{ label: ABOUT.title, href: ABOUT.href }}>
+      omaha is a wiki of American football: schemes, techniques and drills across the whole game.
+      Each page is written from what coaches publish about their own systems, and links the sources
+      it draws on.
+    </Introduction>
+
+    <h2>Browse</h2>
+    <ul>
+      {
+        TYPES.map(({ type, label, blurb, href }) => (
+          <li>
+            <a href={href}>{label}</a> ({pageCount(countByType(entries, type))})
+            <Text variant="small" tone="muted">{blurb}</Text>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>Recently changed</h2>
+    {
+      recent.length === 0 ? (
+        <p>No pages yet.</p>
+      ) : (
+        <WritingList
+          articles={recent.map((entry) => ({
+            title: entry.title,
+            href: pagePath(entry.type, entry.slug),
+            date: entry.updated,
+          }))}
+        />
+      )
+    }
+  </Prose>
+</Base>

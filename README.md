@@ -3,10 +3,42 @@
 A wiki of American football: schemes, techniques and drills across the whole game, written from
 what coaches publish about their own systems.
 
-Nothing is published yet. The site will be built with Astro and served by GitHub Pages.
+The site is at <https://omaha.yamat47.me/>, built with Astro from the design system
+[`@yamat47/pylon`](https://github.com/yamat47/pylon) and served by GitHub Pages. A merge into
+`main` publishes it.
 
 Every page is written in its own words and links the sources it draws on. No text, figure or
 video of a source is copied here.
+
+## Pages
+
+A page is a Markdown file at `content/<type>/<slug>.md`, where the type is `schemes`,
+`situations`, `techniques` or `terms`. Its frontmatter is described by
+[`src/lib/schema.ts`](src/lib/schema.ts), and `make validate` checks every page against it and
+against the other pages.
+
+## Development
+
+Everything runs in Docker; only Docker and `make` are needed on the host.
+
+```sh
+make setup   # build the image and install the dependencies
+make up      # dev server at http://localhost:4321 (make down stops it)
+make check   # typecheck, lint, test, validate the pages, and build
+make help    # list the targets
+```
+
+`OMAHA_CONTENT_DIR=tests/fixtures/content make up` shows the site with four fixture pages, one of
+each type.
+
+## Layout
+
+- `content/`: the pages
+- `src/`: the site and the rules that check the pages
+- `scripts/validate.ts`: the validation `make validate` and CI run
+- `tests/`: Vitest tests, and the fixture pages
+- `docker/`, `Makefile`: the development environment
+- `.github/workflows/`: CI and the deploy to GitHub Pages
 
 ## Skills
 

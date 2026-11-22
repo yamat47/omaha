@@ -1,0 +1,87 @@
+# Builds the site and publishes it to GitHub Pages (https://omaha.yamat47.me/).
+name: Deploy
+
+on:
+  # A merge into main publishes: that is how a new page, a correction or a change of the site
+  # reaches it.
+  push:
+    branches: [main]
+  # By hand, to publish main again without a merge, or to see that another branch builds.
+  workflow_dispatch:
+
+# Runs for one branch go one at a time, so the site is not left at an older merge whose build
+# happened to finish last. A run is not cancelled once it has started: a deploy runs to the end.
+# A run that waits gives way to a newer one, which holds its changes too.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions: {}
+
+env:
+  # Astro reports anonymous usage data unless told not to
+  ASTRO_TELEMETRY_DISABLED: "1"
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read # checkout
+    steps:
+      # github-toolkit is referenced at @main rather than pinned by SHA; the reason is in ci.yml.
+      - name: Checkout
+        uses: yamat47/github-toolkit/actions/checkout@main
+        with:
+          persist-credentials: false
+
+      # No pnpm store cache here, unlike ci.yml: a cache entry is shared across branches, and
+      # what this job builds is published.
+      - name: Setup pnpm
+        # The version is read from packageManager in package.json.
+        uses: yamat47/github-toolkit/actions/setup-pnpm@main
+
+      - name: Setup Node.js
+        uses: yamat47/github-toolkit/actions/setup-node@main
+        with:
+          node-version-file: .node-version
+          package-manager-cache: "false"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # CI runs in parallel with this workflow, so the two checks that decide whether the site
+      # is right are repeated here before anything is published. The build alone does not check
+      # the pages against each other.
+      - name: Typecheck (astro check)
+        run: pnpm run typecheck
+
+      - name: Validate the content
+        run: pnpm run validate
+
+      - name: Build (Astro)
+        run: pnpm run build
+
+      - name: Upload the site
+        uses: yamat47/github-toolkit/actions/upload-pages-artifact@main
+        with:
+          path: dist
+
+  deploy:
+    name: deploy to GitHub Pages
+    # A dispatch from another branch builds it but does not publish it.
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write # deploy-pages creates the deployment
+      id-token: write # deploy-pages proves the artifact came from this workflow
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        name: Deploy
+        uses: yamat47/github-toolkit/actions/deploy-pages@main
