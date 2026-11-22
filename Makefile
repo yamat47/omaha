@@ -77,8 +77,12 @@ test: ## Run the unit tests (Vitest)
 validate: ## Check the files under content/ against the schema and against each other
 	$(PNPM) run validate
 
+.PHONY: prose
+prose: ## Check the prose of the pages and the notes (one file: make prose ARGS="content/schemes/inside-zone.md")
+	$(PNPM) run prose $(ARGS)
+
 .PHONY: check
-check: ## Typecheck, lint, test, validate and build (what CI runs, minus zizmor)
+check: ## Typecheck, lint, test, validate, check the prose and build (what CI runs, minus zizmor)
 	$(PNPM) run check
 
 .PHONY: pnpm

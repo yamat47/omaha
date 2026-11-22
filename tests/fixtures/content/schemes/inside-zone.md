@@ -46,4 +46,4 @@ line.
 1. The back opens to the play side.
 2. He presses the line of scrimmage.
 
-The coach's cue is "slow to, fast through".
+The cue of [Coach Example One](https://example.com/inside-zone-basics) is "slow to, fast through".
