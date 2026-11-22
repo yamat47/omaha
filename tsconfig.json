@@ -1,0 +1,16 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    // TypeScript 6 loads no @types package unless it is named here. The data loader and the
+    // scripts use Node's own modules (node:fs).
+    "types": ["node"],
+    // The scripts run on Node's type stripping, which refuses syntax that needs compiling
+    // (enum, namespace, parameter properties). Without this the typecheck and the tests, which
+    // go through Vite, would accept it, and only the script that loads the module would fail.
+    "erasableSyntaxOnly": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "react"
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
+}
