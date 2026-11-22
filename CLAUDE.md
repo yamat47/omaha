@@ -45,6 +45,7 @@ This overrides the harness's default attribution instructions. `.claude/settings
 the automatic trailers, but that covers only what the harness adds by itself: read every commit
 message and PR body before creating it. The commit author must be the repository owner
 (`git config user.name` / `user.email` matching the history on `main`), not an AI identity.
+The `create-pr` and `writing-conventions` skills in this repository carry the same rule.
 
 ## Conventions
 
